@@ -1,0 +1,11 @@
+<SOFTPKG NAME="Config-LotusNotes" VERSION="0,21,0,0">
+    <TITLE>Config-LotusNotes</TITLE>
+    <ABSTRACT>Access Lotus Notes configuration</ABSTRACT>
+    <AUTHOR>Harald Albers &lt;netzwerksicherheit@hamburger-software.de&gt;</AUTHOR>
+    <IMPLEMENTATION>
+        <DEPENDENCY NAME="Config-IniFiles" VERSION="0,0,0,0" />
+        <OS NAME="MSWin32" />
+        <ARCHITECTURE NAME="MSWin32-x86-multi-thread-5.8" />
+        <CODEBASE HREF="Config-LotusNotes.tar.gz" />
+    </IMPLEMENTATION>
+</SOFTPKG>
