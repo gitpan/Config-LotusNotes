@@ -3,14 +3,11 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     NAME          => 'Config::LotusNotes',
-    VERSION       => '0.21',
+    VERSION       => '0.22',
     ABSTRACT_FROM => 'lib/Config/LotusNotes.pm',
-    AUTHOR        => 'Harald Albers <netzwerksicherheit@hamburger-software.de>',
+    AUTHOR        => 'Harald Albers <albers@cpan.org>',
     PREREQ_PM     => {
-    	# If you include standard modules in this list, ppm will complain about
-    	# them not being installed even if they are.
-        # Test::More         => 0,
-        # Win32::TieRegistry => 0,
-        Config::IniFiles     => 0,
+        Win32::TieRegistry => 0,
+        Config::IniFiles   => 0,
     },
 );

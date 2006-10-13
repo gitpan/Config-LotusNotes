@@ -1,19 +1,28 @@
 Changelog for Config::LotusNotes
 --------------------------------
 
-0.21 (21.08.2006)
-    First public release.
-    Separated logic for locating installs from representation of a 
-    configuration by introducing new module Config::LotusNotes::Configuration.
-    Several minor improvements to make the module more compatible with CPAN.
+0.22 (10/13/2006)
+   - Removed trailing backslash from notespath() for consistency with 
+     datapath() attribute.
+   - Config::LotusNotes no longer dies when no COM server entries are 
+     found in the registry.
+   - Added mock notes install files to test directory so that the modules 
+     can be tested if no Notes is installed.
+   - Added tests for POD coverage
 
-0.2.0 (09.08.2006)
-    Complete rewrite.
-    Changed namespace to Config::LotusNotes.
-    Uses Windows registry instead of lotus.ini to locate Notes.
-    Supports multiple installs.
-    Documentation translated into English.
-    Added demo script FindNotes.pl.
+0.21 (08/21/2006)
+   - First public release.
+   - Separated logic for locating installs from representation of a 
+     configuration by introducing new module Config::LotusNotes::Configuration.
+   - Several minor improvements to make the module more compatible with CPAN.
 
-0.1.0 (28.10.2003)
-    First version of Lotus::Notes::Config.
+0.2.0 (08/09/2006)
+   - Complete rewrite.
+   - Changed namespace to Config::LotusNotes.
+   - Uses Windows registry instead of lotus.ini to locate Notes.
+   - Supports multiple installs.
+   - Documentation translated into English.
+   - Added demo script FindNotes.pl.
+
+0.1.0 (10/28/2003)
+   - First version of Lotus::Notes::Config.

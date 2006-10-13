@@ -1,11 +1,14 @@
-<SOFTPKG NAME="Config-LotusNotes" VERSION="0,21,0,0">
-    <TITLE>Config-LotusNotes</TITLE>
-    <ABSTRACT>Access Lotus Notes configuration</ABSTRACT>
-    <AUTHOR>Harald Albers &lt;netzwerksicherheit@hamburger-software.de&gt;</AUTHOR>
-    <IMPLEMENTATION>
-        <DEPENDENCY NAME="Config-IniFiles" VERSION="0,0,0,0" />
-        <OS NAME="MSWin32" />
-        <ARCHITECTURE NAME="MSWin32-x86-multi-thread-5.8" />
-        <CODEBASE HREF="Config-LotusNotes.tar.gz" />
-    </IMPLEMENTATION>
+<?xml version="1.0" encoding="UTF-8"?>
+<SOFTPKG NAME="Config-LotusNotes" VERSION="0,22,0,0">
+  <TITLE>Config-LotusNotes</TITLE>
+  <ABSTRACT>Access Lotus Notes/Domino configuration</ABSTRACT>
+  <AUTHOR>Harald Albers &lt;albers@cpan.org&gt;</AUTHOR>
+  <IMPLEMENTATION>
+    <DEPENDENCY NAME="Config-IniFiles" VERSION="0,0,0,0" />
+    <OS NAME="MSWin32" />
+    <ARCHITECTURE NAME="MSWin32-x86-multi-thread-5.8" />
+    <CODEBASE HREF="Config-LotusNotes-0.22.tar.gz" />
+    <PROVIDE NAME="Config::LotusNotes" VERSION="0.21" />
+    <PROVIDE NAME="Config::LotusNotes::Configuration" VERSION="0.21" />
+  </IMPLEMENTATION>
 </SOFTPKG>

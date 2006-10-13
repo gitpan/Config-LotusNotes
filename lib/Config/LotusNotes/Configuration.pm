@@ -4,22 +4,19 @@ use strict;
 use Carp;
 use Config::IniFiles;
 
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 
 # constructor ----------------------------------------------------------------
 
-# Do not use directly. 
-# Use the default_configuration() and all_configurations() methods of
-# Config::LotusNotes to create Conf::LotusNotes::Configuration objects. 
 sub new {
     my ($classname, %options) = @_;
     my $path = $options{path} or die 'no notes install path specified';
-    $path .= '\\' unless $path =~ /\\$/;  # just in case
+    $path =~ s/\\$//;
 
     # basic checks of the directory and its content
-    my $notesexe = $path.'nlnotes.exe';
-    my $notesini = $path.'notes.ini';
+    my $notesexe = $path.'\\nlnotes.exe';
+    my $notesini = $path.'\\notes.ini';
     croak "Notes install path not found: $path" unless -d $path;
     croak "No Notes binary found in $path"      unless -f $notesexe;
     croak "No notes.ini found in $path"         unless -f $notesini;
@@ -53,7 +50,7 @@ sub version {
     # try to extract the version from one of these files
     my @files_with_version = qw(nsd.exe ndgts.dll ninotes.dll memcheck.exe nnntp);
     foreach my $file (@files_with_version) {
-        my $filepath = $self->notespath . $file;
+        my $filepath = $self->notespath . "\\" . $file;
         next unless -f $filepath;
         open FILE, "< $filepath" or next; # skip errors.
         while (<FILE>) {
@@ -91,11 +88,12 @@ sub set_environment_value {
 
 =head1 NAME
 
-Config::LotusNotes::Configuration - Represents one Lotus Notes configuration
+Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configuration
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes::Configuration> 0.21.
+This documentation refers to C<Config::LotusNotes::Configuration> 0.22, 
+released Oct 13, 2006.
 
 =head1 SYNOPSIS
 
@@ -124,9 +122,10 @@ for more information on exchanging data with Lotus Notes via the Notes environme
 C<Config::LotusNotes::Configuration> objects also give you access to some 
 basic information like install paths and the Notes version number.
 
-You do not create these objects directly, instead you use the 
-default_configuration() and all_configurations() methods of
-L<Config::LotusNotes|Config::LotusNotes>.
+To create these objects, use the 
+L<default_configuration()|Config::LotusNotes/item_default_configuration> and 
+L<all_configurations()|Config::LotusNotes/item_default_configuration>
+methods of L<Config::LotusNotes|Config::LotusNotes>.
 
 =head1 PROPERTIES
 
@@ -161,6 +160,17 @@ Returns true if the configuration belongs to a server installation.
 =head1 METHODS
 
 =over 4
+
+=item new(path => $path);
+
+Constructor, returns a C<Config::LotusNotes::Configuration> object 
+representing the installation at the specified path. 
+
+The recommended way to create C<Config::LotusNotes::Configuration> 
+objects is to use the
+L<default_configuration()|Config::LotusNotes/item_default_configuration> and 
+L<all_configurations()|Config::LotusNotes/item_default_configuration>
+methods of L<Config::LotusNotes|Config::LotusNotes>.
 
 =item get_environment_value($item_name);
 
@@ -198,14 +208,13 @@ This module is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 This library is distributed in the hope that it will be useful, but 
-B<without any warranty>; without even the implied warranty of 
-B<merchantibility> or B<fitness for a particular purpose>.
+without any warranty; without even the implied warranty of 
+merchantibility or fitness for a particular purpose.
 
 =head1 AUTOR
 
-Harald Albers, netzwerksicherheit@hamburger-software.de
+Harald Albers, albers@cpan.org
 
 Version 0.1 written 10/2003. See the F<Changes> file for change history.
 
 =cut
-

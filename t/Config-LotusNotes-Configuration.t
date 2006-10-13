@@ -2,14 +2,20 @@ use strict;
 use warnings;
 use Test::More;
 
+my $VERSION = '0.22';
+my $test_data = 'data';  # directory with test files mocking a Notes install
+
 # expected number of tests
-plan tests => 11;
+plan tests => 18;
 #plan 'no_plan';
 
+# ensure that test data can be found 
+BEGIN {chdir 't' if -d 't'}
+die "test data directory $test_data not found" unless -d $test_data;
+use lib '../lib';
+
 # load module
-BEGIN { use_ok('Config::LotusNotes'); }
-BEGIN { use_ok('Config::LotusNotes::Configuration'); }
-my $VERSION = '0.21';
+use_ok('Config::LotusNotes::Configuration') or exit;
 
 # do we test the expected version?
 is($Config::LotusNotes::Configuration::VERSION, $VERSION, "version = $VERSION");
@@ -22,20 +28,34 @@ can_ok('Config::LotusNotes::Configuration', qw(
     get_environment_value set_environment_value
 ));
 
-# constructor for the factory object
-my $factory = Config::LotusNotes->new;
+# constructor should die if called without path argument
+eval { Config::LotusNotes::Configuration->new() };
+like(
+    $@, 
+    qr/no notes install path specified/,
+    'constructor dies if no path is supplied'
+);
 
-# get default configuration
-ok(my $conf = $factory->default_configuration, 'get default configuration');
-isa_ok($conf, 'Config::LotusNotes::Configuration');
+# this should work. If not, exit as the rest of the test will also fail.
+ok(
+    my $config = Config::LotusNotes::Configuration->new(path => 'data'),
+    'constructor successful'
+) or exit;
+isa_ok($config, 'Config::LotusNotes::Configuration') or exit;
 
-# test some attributes
-like($conf->version(), qr/^\d+\.\d+(\.\d+)?[a-z]?$/, 'version looks OK');
-isnt($conf->is_server(), $conf->is_client(), 'is_server and is_client differ');
+# checking attributes
+is($config->notespath, "data",            'notespath attribute');
+is($config->datapath,  "d:\\notes\\data", 'datapath attribute' );
+is($config->notesini,  "data\\notes.ini", 'notesini attribute' );
 
-# reading, writing and deleting information
-is($conf->get_environment_value('$testthewest'        ), undef,  'read undefined key');
-ok($conf->set_environment_value('$testthewest', 'test'),         'store key' );
-is($conf->get_environment_value('$testthewest'        ), 'test', 'verify key');
-ok($conf->set_environment_value('$testthewest', undef ),         'delete key');
-is($conf->get_environment_value('$testthewest'        ), undef,  'verify key');
+is($config->version,  '5.0.10',           'version attribute'  );
+is($config->is_client, 1,                 'is_client attribute');
+is($config->is_server, '',                'is_server attribute');
+
+# reading, writing and deleting environment values
+is($config->get_environment_value('KitType'             ), 1,      'read existing key');
+is($config->get_environment_value('$testthewest'        ), undef,  'read undefined key');
+ok($config->set_environment_value('$testthewest', 'test'),         'store key' );
+is($config->get_environment_value('$testthewest'        ), 'test', 'verify key');
+ok($config->set_environment_value('$testthewest', undef ),         'delete key');
+is($config->get_environment_value('$testthewest'        ), undef,  'verify key');

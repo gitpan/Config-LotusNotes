@@ -5,7 +5,7 @@ use Carp;
 use Win32::TieRegistry Delimiter => '/';
 use Config::LotusNotes::Configuration;
 
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 # constructor ----------------------------------------------------------------
 
@@ -160,11 +160,11 @@ sub _get_typelib_locations {
 
     # get the COM Server's CLSID
     my $com_clsid = $Registry->{'Classes/Lotus.NotesSession/CLSID//'}
-        or die 'Lotus Notes COM Server not found in registry';
+        or return;
 
     # get the CLSID of its typelib key
     my $typelib_clsid = $Registry->{"Classes/CLSID/$com_clsid/TypeLib//"}
-        or die 'TypeLib for Lotus Notes COM Server not found in registry';
+        or return;
 
     # search all available typelib versions for paths
     my $typelib = $Registry->{"Classes/TypeLib/$typelib_clsid/"};
@@ -202,11 +202,11 @@ sub _normalize_path {
 
 =head1 NAME
 
-Config::LotusNotes - Access Lotus Notes configuration
+Config::LotusNotes - Access Lotus Notes/Domino configuration
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes> 0.21.
+This documentation refers to C<Config::LotusNotes> 0.22, released Oct 13, 2006.
 
 =head1 SYNOPSIS
 
@@ -284,7 +284,7 @@ if it cannot find any Lotus Notes installation.
 
 =item all_configurations();
 
-This gives you an array containing a 
+This gives you an array containing one 
 L<Config::LotusNotes::Configuration|Config::LotusNotes::Configuration> object 
 for each Lotus Notes/Domino installation found on your machine.
 If no installation is found, an empty array is returned.
@@ -320,11 +320,12 @@ diagnostic information on the search progress.
 
 =head1 DEPENDENCIES
 
-This module only runs under Mircosoft Windows (tested on Windows NT, 2000 
+This module only runs under Microsoft Windows (tested on Windows NT, 2000 
 and XP).
 It uses L<Win32::TieRegistry|Win32::TieRegistry> and 
-L<Config::IniFiles|Config::IniFiles> (which ist not a standard module.). 
+L<Config::IniFiles|Config::IniFiles> (which ist not a standard module). 
 The test require Test::More.
+Optional modules for the tests are Test::Pod and Test::Pod::Coverage.
 
 =head1 BUGS AND LIMITATIONS
 
@@ -404,12 +405,12 @@ This module is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 This library is distributed in the hope that it will be useful, but 
-B<without any warranty>; without even the implied warranty of 
-B<merchantibility> or B<fitness for a particular purpose>.
+without any warranty; without even the implied warranty of 
+merchantibility or fitness for a particular purpose.
 
 =head1 AUTOR
 
-Harald Albers, netzwerksicherheit@hamburger-software.de
+Harald Albers, albers@cpan.org
 
 Version 0.1 written 10/2003. See the F<Changes> file for change history.
 
