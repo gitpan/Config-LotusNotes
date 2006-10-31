@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<SOFTPKG NAME="Config-LotusNotes" VERSION="0,22,0,0">
+<SOFTPKG NAME="Config-LotusNotes" VERSION="0,23,0,0">
   <TITLE>Config-LotusNotes</TITLE>
   <ABSTRACT>Access Lotus Notes/Domino configuration</ABSTRACT>
   <AUTHOR>Harald Albers &lt;albers@cpan.org&gt;</AUTHOR>
@@ -7,8 +7,8 @@
     <DEPENDENCY NAME="Config-IniFiles" VERSION="0,0,0,0" />
     <OS NAME="MSWin32" />
     <ARCHITECTURE NAME="MSWin32-x86-multi-thread-5.8" />
-    <CODEBASE HREF="Config-LotusNotes-0.22.tar.gz" />
-    <PROVIDE NAME="Config::LotusNotes" VERSION="0.21" />
-    <PROVIDE NAME="Config::LotusNotes::Configuration" VERSION="0.21" />
+    <CODEBASE HREF="Config-LotusNotes.tar.gz" />
+    <PROVIDE NAME="Config::LotusNotes" VERSION="0.22" />
+    <PROVIDE NAME="Config::LotusNotes::Configuration" VERSION="0.22" />
   </IMPLEMENTATION>
 </SOFTPKG>

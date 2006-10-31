@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 # the contents of the Makefile that is written.
 WriteMakefile(
     NAME          => 'Config::LotusNotes',
-    VERSION       => '0.22',
+    VERSION_FROM  => 'lib/Config/LotusNotes.pm',
     ABSTRACT_FROM => 'lib/Config/LotusNotes.pm',
     AUTHOR        => 'Harald Albers <albers@cpan.org>',
     PREREQ_PM     => {

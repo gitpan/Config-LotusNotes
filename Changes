@@ -1,6 +1,11 @@
 Changelog for Config::LotusNotes
 --------------------------------
 
+0.23 (10/31/2006)
+   - demo/FindNotes.pl no more dies on systems with no Notes installed.
+   - improved handling of debug messages for corrupt notes.ini files.
+   - documentation improvements.
+
 0.22 (10/13/2006)
    - Removed trailing backslash from notespath() for consistency with 
      datapath() attribute.

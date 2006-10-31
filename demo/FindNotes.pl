@@ -11,21 +11,28 @@ my %options;
 $options{debug} = 1 if $ARGV[0]||'' eq '-d';
 
 my $conf = Config::LotusNotes->new(%options);
-my $default   = $conf->default_configuration()
-    or die "No Lotus Notes installs found";
 my @all_confs = $conf->all_configurations();
+my $default   = eval { $conf->default_configuration() };
 
-print "Lotus Notes installs on ", Win32::NodeName(), ":\n";
-print "-" x (length(Win32::NodeName())+25), "\n";
+print "Lotus Notes installs on node ", Win32::NodeName(), ":\n";
+print "-" x (length(Win32::NodeName())+30), "\n";
 
-printf "%-8s %-7s %s\n", 'version', 'type', 'path';
-foreach my $conf (sort by_version_and_type @all_confs) {
-    printf "%-8s %-7s %s %s\n", 
-        $conf->version, 
-        $conf->is_server ? 'server' : 'client', 
-        $conf->notespath,
-        $conf->notespath eq $default->notespath ? '(default)' : '',
-        ;
+if (@all_confs) {
+	printf "%-8s %-7s %s\n", 'version', 'type', 'path';
+	foreach my $conf (sort by_version_and_type @all_confs) {
+	    printf "%-8s %-7s %s %s\n", 
+	        $conf->version, 
+	        $conf->is_server ? 'server' : 'client', 
+	        $conf->notespath,
+	        ($default and $conf->notespath eq $default->notespath) 
+	        	? '(default)'
+	        	: ''
+	        	,
+	        ;
+	}
+}
+else {
+	print "none\n";
 }
 
 

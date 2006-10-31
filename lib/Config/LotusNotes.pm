@@ -5,7 +5,7 @@ use Carp;
 use Win32::TieRegistry Delimiter => '/';
 use Config::LotusNotes::Configuration;
 
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 # constructor ----------------------------------------------------------------
 
@@ -36,8 +36,9 @@ sub all_configurations {
             push @configurations, $config;
         }
         else {
-            carp $@ if $@ =~ /^Error parsing /;
-            print STDERR "NOK: $@\n"  if $self->{debug};
+            my $errmsg = $@; 
+            print STDERR "NOK: ", join("\n", @Config::IniFiles::errors), "\n"  if $self->{debug};
+            carp $errmsg if $errmsg =~ /^Error parsing /;
         }
     }
     print STDERR "-- Returning " . @configurations . " configuration objects\n"  if $self->{debug};
@@ -206,7 +207,7 @@ Config::LotusNotes - Access Lotus Notes/Domino configuration
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes> 0.22, released Oct 13, 2006.
+This documentation refers to C<Config::LotusNotes> 0.23, released Oct 31, 2006.
 
 =head1 SYNOPSIS
 
@@ -352,18 +353,26 @@ So in real life, there should be no problem with missed installations.
 
 If the F<notes.ini> file is malformed, a warning will be issued and the 
 corresponding installation will be skipped by all_configurations()Z<>. 
-new() will throw an exception in that case.  
+default_configuration() will throw an exception in that case.
+The reason for this is that L<Config::IniFiles|Config::IniFiles> cannot handle
+corrupt ini-files.
 
 Malformed F<notes.ini> files can be produced by writing multiline values to the
-environment, e.g. with code like this: 
+environment, e.g. with Notes formula code like this: 
 C<@SetEnvironment("testvalue"; "A"+@Char(10)+"B")>, which produces two lines, 
-the second just containing "B".
+the second one just containing "B".
 A successive read of testvalue will return just "A".
 
 If you run into this kind of problem, check whether all lines except the first 
 one are of the pattern C<parameter=value>. 
 If not, back up your F<notes.ini> and delete any line with no "=" 
-(except the C<[Notes]> line). Try again.
+(except the C<[Notes]> line, of course). Try again.
+
+On the L<Config::IniFiles|Config::IniFiles> project homepage at 
+http://sourceforge.net/projects/config-inifiles/
+you can find a patch to "Support MySQL my.cnf".
+This patch also enables L<Config::IniFiles|Config::IniFiles> to work with 
+corrupt F<notes.ini> files.
 
 =head1 EXAMPLES
 
