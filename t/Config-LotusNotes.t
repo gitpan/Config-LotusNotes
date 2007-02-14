@@ -5,20 +5,21 @@ use strict;
 use warnings;
 use Test::More;
 
-my $VERSION = '0.23';
+my $VERSION = '0.30';
 my $test_data = 'data';  # directory with test files mocking a Notes install
 
 # expected number of tests
-plan tests => 10;
-#plan 'no_plan';
+BEGIN {
+    plan tests => 10;
+    #plan 'no_plan';
+}
+
+# load module
+BEGIN { use_ok('Config::LotusNotes') or exit; }
 
 # ensure that test data can be found 
 BEGIN {chdir 't' if -d 't'}
 die "test data directory $test_data not found" unless -d $test_data;
-use lib '../lib';
-
-# load module
-use_ok('Config::LotusNotes') or exit;
 
 # do we test the expected version?
 is($Config::LotusNotes::VERSION, $VERSION, "version = $VERSION");

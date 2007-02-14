@@ -2,16 +2,16 @@ package Config::LotusNotes::Configuration;
 use strict;
 #use warnings;
 use Carp;
-use Config::IniFiles;
+use Config::IniHash;
 
-our $VERSION = '0.23';
+our $VERSION = '0.30';
 
 
 # constructor ----------------------------------------------------------------
 
 sub new {
     my ($classname, %options) = @_;
-    my $path = $options{path} or die 'no notes install path specified';
+    my $path = $options{path} or die 'no Notes install path specified';
     $path =~ s/\\$//;
 
     # basic checks of the directory and its content
@@ -22,13 +22,13 @@ sub new {
     croak "No notes.ini found in $path"         unless -f $notesini;
 
     # Create and store object for easy access to inifile values.
-    # There might be invalid lines in R6 notes.ini. 
-    my $inifile = Config::IniFiles->new(-file => $notesini) 
+    # Config::IniHash lets us treat the inifile as an ordinary hash.
+    my $inihash = ReadINI($notesini, (case => 'sensitive')) 
         or croak "Error parsing $notesini";
     my $self = bless {
         notespath => $path,
         notesini  => $notesini,
-        inifile   => $inifile,
+        inihash   => $inihash,
     }, $classname;
     return $self;
 }
@@ -59,7 +59,7 @@ sub version {
         }
         close FILE;
     }
-    croak 'could not determine notes version';
+    croak 'could not determine Notes version';
 }
 
 
@@ -67,19 +67,19 @@ sub version {
 
 sub get_environment_value {
 	my ($self, $key) = @_;
-	return $self->{inifile}->val("Notes", $key);
+	return $self->{inihash}->{Notes}->{$key};
 }
 
 
 sub set_environment_value {
 	my ($self, $key, $value) = @_;
-	if ($self->{inifile}->val("Notes", $key)) {
-		$self->{inifile}->setval("Notes", $key, $value) or return;
-	} 
-	else {
-		$self->{inifile}->newval("Notes", $key, $value) or return;
+	if (defined $value) {
+    	$self->{inihash}->{Notes}->{$key} = $value;
 	}
-	return $self->{inifile}->WriteConfig($self->{notesini});
+	else {
+	    delete $self->{inihash}->{Notes}->{$key};
+	}
+	return WriteINI($self->{notesini}, $self->{inihash});
 }
 
 
@@ -92,8 +92,8 @@ Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configurat
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes::Configuration> 0.23, 
-released Oct 31, 2006.
+This documentation refers to C<Config::LotusNotes::Configuration> 0.30, 
+released Feb 14, 2007.
 
 =head1 SYNOPSIS
 
@@ -189,6 +189,9 @@ If the value is C<undef>, the whole entry is removed.
 If you want the parameter to be accessible to Lotus Notes via the environment 
 functions, prefix its name with "$".
 
+If you write to a F<notes.ini> file with this function, its entries will 
+be saved in random order.
+
 =back
 
 =head1 BUGS AND LIMITATIONS
@@ -215,6 +218,6 @@ merchantibility or fitness for a particular purpose.
 
 Harald Albers, albers@cpan.org
 
-Version 0.1 written 10/2003. See the F<Changes> file for change history.
+See the F<Changes> file for the change history.
 
 =cut

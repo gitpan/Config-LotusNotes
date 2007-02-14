@@ -5,7 +5,7 @@ use Carp;
 use Win32::TieRegistry Delimiter => '/';
 use Config::LotusNotes::Configuration;
 
-our $VERSION = '0.23';
+our $VERSION = '0.30';
 
 # constructor ----------------------------------------------------------------
 
@@ -207,7 +207,8 @@ Config::LotusNotes - Access Lotus Notes/Domino configuration
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes> 0.23, released Oct 31, 2006.
+This documentation refers to C<Config::LotusNotes> 0.30, 
+released Feb 14, 2007.
 
 =head1 SYNOPSIS
 
@@ -224,7 +225,7 @@ This documentation refers to C<Config::LotusNotes> 0.23, released Oct 31, 2006.
 =head1 DESCRIPTION
 
 C<Config::LotusNotes> gives you a view of your local Lotus Notes/Domino 
-installations from the filesystem perspective.
+installations from the filesystem's perspective.
 Its main purpose is to read and manipulate the main Notes configuration file, 
 F<notes.ini>. 
 
@@ -289,8 +290,6 @@ This gives you an array containing one
 L<Config::LotusNotes::Configuration|Config::LotusNotes::Configuration> object 
 for each Lotus Notes/Domino installation found on your machine.
 If no installation is found, an empty array is returned.
-In rare cases, an installation might not be detected. See L<BUGS AND LIMITATIONS> 
-for details.
 
 =back
 
@@ -305,7 +304,7 @@ scripting capabilities. Here is an OLE example:
   $Notes = Win32::OLE->new('Notes.NotesSession')
       or die "Cannot start Notes.NotesSession object.\n";
   ($Version) = ($Notes->{NotesVersion} =~ /\s*(.*\S)\s*$/); # remove blanks
-  printf "Running Notes \"%s\" on \"%s\".\n", $Version, $Notes->Platform;
+  printf "Running Notes %s on %s.\n", $Version, $Notes->Platform;
 
   # write value to environment
   print "Setting $key to $value\n";
@@ -324,11 +323,14 @@ diagnostic information on the search progress.
 This module only runs under Microsoft Windows (tested on Windows NT, 2000 
 and XP).
 It uses L<Win32::TieRegistry|Win32::TieRegistry> and 
-L<Config::IniFiles|Config::IniFiles> (which ist not a standard module). 
+L<Config::IniHash|Config::IniHash> (which ist not a standard module). 
 The test require Test::More.
 Optional modules for the tests are Test::Pod and Test::Pod::Coverage.
 
 =head1 BUGS AND LIMITATIONS
+
+Please report any bugs or feature requests through the web interface at 
+http://rt.cpan.org/Public/Bug/Report.html?Queue=Config-LotusNotes 
 
 =head2 Problems locating installations
 
@@ -349,13 +351,18 @@ The normal behaviour of the installer is to force you to update your previous
 installation. 
 So in real life, there should be no problem with missed installations.   
 
-=head2 Problems parsing notes.ini
+=head2 Malformed notes.ini files
 
-If the F<notes.ini> file is malformed, a warning will be issued and the 
+Under certains conditions a F<notes.ini> file may contain malformed lines,
+i.e. lines that do not match the pattern C<parameter=value>.
+Such lines are ignored when reading values. 
+If you write back values to a corrupt F<notes.ini> file using the
+L<set_environment_value()|Config::LotusNotes::Configuration/set_environment_value> 
+function, the malformed lines are removed from F<notes.ini>.
+
+If a F<notes.ini> file cannot be parsed at all, a warning will be issued and the 
 corresponding installation will be skipped by all_configurations()Z<>. 
-default_configuration() will throw an exception in that case.
-The reason for this is that L<Config::IniFiles|Config::IniFiles> cannot handle
-corrupt ini-files.
+default_configuration() will throw an "Error parsing ..." exception in that case.
 
 Malformed F<notes.ini> files can be produced by writing multiline values to the
 environment, e.g. with Notes formula code like this: 
@@ -363,18 +370,16 @@ C<@SetEnvironment("testvalue"; "A"+@Char(10)+"B")>, which produces two lines,
 the second one just containing "B".
 A successive read of testvalue will return just "A".
 
-If you run into this kind of problem, check whether all lines except the first 
-one are of the pattern C<parameter=value>. 
-If not, back up your F<notes.ini> and delete any line with no "=" 
-(except the C<[Notes]> line, of course). Try again.
+=head2 Parameter order in notes.ini
 
-On the L<Config::IniFiles|Config::IniFiles> project homepage at 
-http://sourceforge.net/projects/config-inifiles/
-you can find a patch to "Support MySQL my.cnf".
-This patch also enables L<Config::IniFiles|Config::IniFiles> to work with 
-corrupt F<notes.ini> files.
+If you write to a F<notes.ini> file with the
+L<set_environment_value()|Config::LotusNotes::Configuration/set_environment_value> 
+function, the entries in that file will appear in random order.
+This should not pose any problems.
 
 =head1 EXAMPLES
+
+=head2 code example
 
   use Config::LotusNotes;
   $factory = Config::LotusNotes->new();
@@ -405,6 +410,12 @@ corrupt F<notes.ini> files.
   # filter the list: only servers
   @servers = grep { $_->is_server } @all_confs;
 
+=head2 demo scripts
+
+This module also installs two simple demonstration scripts: 
+F<findnotes.pl> enumerates local Notes/Domino installations and
+F<editnotesini.pl> reads and changes notes.ini parameters.
+
 =head1 LICENCE AND COPYRIGHT
 
 Copyright (C) 2006 HS - Hamburger Software GmbH & Co. KG.
@@ -421,6 +432,6 @@ merchantibility or fitness for a particular purpose.
 
 Harald Albers, albers@cpan.org
 
-Version 0.1 written 10/2003. See the F<Changes> file for change history.
+See the F<Changes> file for the change history.
 
 =cut

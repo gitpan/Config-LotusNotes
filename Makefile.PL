@@ -6,8 +6,12 @@ WriteMakefile(
     VERSION_FROM  => 'lib/Config/LotusNotes.pm',
     ABSTRACT_FROM => 'lib/Config/LotusNotes.pm',
     AUTHOR        => 'Harald Albers <albers@cpan.org>',
+    EXE_FILES     => [
+        'demo/editnotesini.pl', 
+        'demo/FindNotes.pl',
+    ],
     PREREQ_PM     => {
         Win32::TieRegistry => 0,
-        Config::IniFiles   => 0,
+        Config::IniHash    => 0,
     },
 );

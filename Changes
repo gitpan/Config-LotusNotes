@@ -1,6 +1,12 @@
 Changelog for Config::LotusNotes
 --------------------------------
 
+0.30 (02/14/2007)
+   - use Config::IniHash instead of Config::IniFiles to handle reading and 
+     writing notes.ini files. This module can deal with malformed ini files.
+   - added demo script editnotesini.pl
+   - demo scripts now get installed
+
 0.23 (10/31/2006)
    - demo/FindNotes.pl no more dies on systems with no Notes installed.
    - improved handling of debug messages for corrupt notes.ini files.
@@ -30,4 +36,4 @@ Changelog for Config::LotusNotes
    - Added demo script FindNotes.pl.
 
 0.1.0 (10/28/2003)
-   - First version of Lotus::Notes::Config.
+   - First version as Lotus::Notes::Config.

@@ -1,5 +1,6 @@
 lib/Config/LotusNotes.pm
 lib/Config/LotusNotes/Configuration.pm
+demo/editnotesini.pl
 demo/FindNotes.pl
 Makefile.PL
 MANIFEST

@@ -2,20 +2,21 @@ use strict;
 use warnings;
 use Test::More;
 
-my $VERSION = '0.23';
+my $VERSION = '0.30';
 my $test_data = 'data';  # directory with test files mocking a Notes install
 
 # expected number of tests
-plan tests => 18;
-#plan 'no_plan';
+BEGIN {
+    plan tests => 21;
+    #plan 'no_plan';
+}
+
+# load module
+BEGIN { use_ok('Config::LotusNotes::Configuration') or exit; }
 
 # ensure that test data can be found 
 BEGIN {chdir 't' if -d 't'}
 die "test data directory $test_data not found" unless -d $test_data;
-use lib '../lib';
-
-# load module
-use_ok('Config::LotusNotes::Configuration') or exit;
 
 # do we test the expected version?
 is($Config::LotusNotes::Configuration::VERSION, $VERSION, "version = $VERSION");
@@ -32,7 +33,7 @@ can_ok('Config::LotusNotes::Configuration', qw(
 eval { Config::LotusNotes::Configuration->new() };
 like(
     $@, 
-    qr/no notes install path specified/,
+    qr/no Notes install path specified/,
     'constructor dies if no path is supplied'
 );
 
@@ -54,8 +55,11 @@ is($config->is_server, '',                'is_server attribute');
 
 # reading, writing and deleting environment values
 is($config->get_environment_value('KitType'             ), 1,      'read existing key');
+is($config->get_environment_value('$EmptyKey'           ), '',     'read empty key');
 is($config->get_environment_value('$testthewest'        ), undef,  'read undefined key');
 ok($config->set_environment_value('$testthewest', 'test'),         'store key' );
 is($config->get_environment_value('$testthewest'        ), 'test', 'verify key');
+ok($config->set_environment_value('$testthewest', ''    ),         'set empty value');
+is($config->get_environment_value('$testthewest'        ), '',     'verify empty value');
 ok($config->set_environment_value('$testthewest', undef ),         'delete key');
-is($config->get_environment_value('$testthewest'        ), undef,  'verify key');
+is($config->get_environment_value('$testthewest'        ), undef,  'verify deleted key');
