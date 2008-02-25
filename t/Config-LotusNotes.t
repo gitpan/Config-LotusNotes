@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::More;
 
-my $VERSION = '0.30';
+my $VERSION = '0.31';
 my $test_data = 'data';  # directory with test files mocking a Notes install
 
 # expected number of tests
@@ -38,13 +38,13 @@ isa_ok($factory, 'Config::LotusNotes');
 
     # get default configuration
     no warnings 'redefine';
-    local *Config::LotusNotes::_get_default_location = sub { 'data' };     
+    local *Config::LotusNotes::_get_default_location = sub { 'data' };
     ok(my $conf = $factory->default_configuration, 'get default configuration');
     isa_ok($conf, 'Config::LotusNotes::Configuration');
 
     # get all configurations
     # we supply two existing paths and one invalid location.
-    local *Config::LotusNotes::_get_all_locations = sub { qw(data data nothing) };     
+    local *Config::LotusNotes::_get_all_locations = sub { qw(data data nothing) };
     my @all_confs = $factory->all_configurations();
     is(@all_confs, 2, 'Two install found');
     isa_ok($all_confs[0], 'Config::LotusNotes::Configuration');

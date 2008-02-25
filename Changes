@@ -1,6 +1,10 @@
 Changelog for Config::LotusNotes
 --------------------------------
 
+0.31 (02/25/2008)
+   - added support for "all users" install variant
+   - updated ppm package to support perl 5.10
+
 0.30 (02/14/2007)
    - use Config::IniHash instead of Config::IniFiles to handle reading and 
      writing notes.ini files. This module can deal with malformed ini files.

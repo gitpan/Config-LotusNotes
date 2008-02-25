@@ -1,0 +1,210 @@
+<?xml version="1.0" ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<!-- saved from url=(0017)http://localhost/ -->
+<script language="JavaScript" src="../../../../displayToc.js"></script>
+<script language="JavaScript" src="../../../../tocParas.js"></script>
+<script language="JavaScript" src="../../../../tocTab.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../../scineplex.css">
+<title>Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configuration</title>
+<link rel="stylesheet" href="../../../../Active.css" type="text/css" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<script>writelinks('__top__',4);</script>
+<h1><a>Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configuration</a></h1>
+<p><a name="__index__"></a></p>
+
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#version">VERSION</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#properties">PROPERTIES</a></li>
+	<li><a href="#methods">METHODS</a></li>
+	<li><a href="#bugs_and_limitations">BUGS AND LIMITATIONS</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+	<li><a href="#licence_and_copyright">LICENCE AND COPYRIGHT</a></li>
+	<li><a href="#autor">AUTOR</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configuration</p>
+<p>
+</p>
+<hr />
+<h1><a name="version">VERSION</a></h1>
+<p>This documentation refers to <code>Config::LotusNotes::Configuration</code> 0.31, 
+released Feb 25, 2008.</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+  <span class="variable">$factory</span> <span class="operator">=</span> <span class="variable">Config::LotusNotes</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+</pre>
+<pre>
+  <span class="comment"># access default installation</span>
+  <span class="variable">$conf</span> <span class="operator">=</span> <span class="variable">$factory</span><span class="operator">-&gt;</span><span class="variable">default_configuration</span><span class="operator">();</span>
+</pre>
+<pre>
+  <span class="comment"># basic information about a configuration</span>
+  <span class="keyword">print</span> <span class="string">"Version: "</span><span class="operator">,</span> <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">version</span><span class="operator">,</span> <span class="string">"\n"</span><span class="operator">;</span>
+  <span class="keyword">print</span> <span class="string">"This is a server.\n"</span> <span class="keyword">if</span> <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">is_server</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="comment"># getting and setting environment values</span>
+  <span class="variable">$data</span> <span class="operator">=</span> <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">get_environment_value</span><span class="operator">(</span><span class="string">'Directory'</span><span class="operator">);</span>
+  <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">set_environment_value</span><span class="operator">(</span><span class="string">'$NotesEnvParameter'</span><span class="operator">,</span> <span class="string">'value'</span><span class="operator">);</span>
+</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>A <code>Config::LotusNotes::Configuration</code> object represents the configuration
+of a local Lotus Notes/Domino installation from the view of the file system.
+It lets you read and modify the Lotus Notes configuration file, <em class="file">notes.ini</em>,
+where Notes stores its environment. 
+See <a href="../../../../site/lib/Config/LotusNotes.html#the_lotus_notes_environment">The Lotus Notes environment in the Config::LotusNotes manpage</a> 
+for more information on exchanging data with Lotus Notes via the Notes environment.</p>
+<p><code>Config::LotusNotes::Configuration</code> objects also give you access to some 
+basic information like install paths and the Notes version number.</p>
+<p>To create these objects, use the 
+<a href="../../../../site/lib/Config/LotusNotes.html#item_default_configuration">default_configuration()</a> and 
+<a href="../../../../site/lib/Config/LotusNotes.html#item_default_configuration">all_configurations()</a>
+methods of <a href="../../../../site/lib/Config/LotusNotes.html">Config::LotusNotes</a>.</p>
+<p>
+</p>
+<hr />
+<h1><a name="properties">PROPERTIES</a></h1>
+<dl>
+<dt><strong><a name="notespath" class="item"><code>notespath()</code>;</a></strong>
+
+<dd>
+<p>Returns the path where the program files are stored.</p>
+</dd>
+</li>
+<dt><strong><a name="datapath" class="item"><code>datapath()</code>;</a></strong>
+
+<dd>
+<p>Returns the path where the data files are stored.</p>
+</dd>
+</li>
+<dt><strong><a name="notesini" class="item"><code>notesini()</code>;</a></strong>
+
+<dd>
+<p>Returns the full path (including file name) of the <em class="file">notes.ini</em> file.</p>
+</dd>
+</li>
+<dt><strong><a name="version" class="item"><code>version()</code>;</a></strong>
+
+<dd>
+<p>Returns the Lotus Notes version number, e.g. 7.0 or 5.0.13a.</p>
+</dd>
+</li>
+<dt><strong><a name="is_client" class="item"><code>is_client()</code>;</a></strong>
+
+<dd>
+<p>Returns true if the configuration belongs to a client (workstation) installation.</p>
+</dd>
+</li>
+<dt><strong><a name="is_server" class="item"><code>is_server()</code>;</a></strong>
+
+<dd>
+<p>Returns true if the configuration belongs to a server installation.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="methods">METHODS</a></h1>
+<dl>
+<dt><strong><a name="new" class="item">new(path =&gt; $path);</a></strong>
+
+<dd>
+<p>Constructor, returns a <code>Config::LotusNotes::Configuration</code> object 
+representing the installation at the specified path.</p>
+</dd>
+<dd>
+<p>The recommended way to create <code>Config::LotusNotes::Configuration</code> 
+objects is to use the
+<a href="../../../../site/lib/Config/LotusNotes.html#item_default_configuration">default_configuration()</a> and 
+<a href="../../../../site/lib/Config/LotusNotes.html#item_default_configuration">all_configurations()</a>
+methods of <a href="../../../../site/lib/Config/LotusNotes.html">Config::LotusNotes</a>.</p>
+</dd>
+</li>
+<dt><strong><a name="get_environment_value" class="item"><code>get_environment_value($item_name)</code>;</a></strong>
+
+<dd>
+<p>Gets the value of the parameter named <code>$item_name</code> from <em class="file">notes.ini</em>.
+If there is no such parameter, <a href="../../../../lib/pods/perlfunc.html#undef"><code>undef</code></a> is returned.</p>
+</dd>
+<dd>
+<p>In order to access values that were written by Lotus Notes via the environment 
+functions, prefix the parameter name with &quot;$&quot;.</p>
+</dd>
+</li>
+<dt><strong><a name="set_environment_value" class="item">set_environment_value($item_name, $value);</a></strong>
+
+<dd>
+<p>Writes a parameter/value pair to <em class="file">notes.ini</em>.
+If the entry exists, it will be updated with the new value.
+If the value is <a href="../../../../lib/pods/perlfunc.html#undef"><code>undef</code></a>, the whole entry is removed.</p>
+</dd>
+<dd>
+<p>If you want the parameter to be accessible to Lotus Notes via the environment 
+functions, prefix its name with &quot;$&quot;.</p>
+</dd>
+<dd>
+<p>If you write to a <em class="file">notes.ini</em> file with this function, its entries will 
+be saved in random order.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="bugs_and_limitations">BUGS AND LIMITATIONS</a></h1>
+<p>See <a href="../../../../site/lib/Config/LotusNotes.html#bugs_and_limitations">BUGS AND LIMITATIONS in the Config::LotusNotes manpage</a>.</p>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>See <a href="../../../../site/lib/Config/LotusNotes.html#examples">EXAMPLES in the Config::LotusNotes manpage</a>.</p>
+<p>
+</p>
+<hr />
+<h1><a name="licence_and_copyright">LICENCE AND COPYRIGHT</a></h1>
+<p>Copyright (C) 2006 HS - Hamburger Software GmbH &amp; Co. KG.
+All rights reserved.</p>
+<p>This module is free software; you can redistribute it and/or modify it 
+under the same terms as Perl itself.</p>
+<p>This library is distributed in the hope that it will be useful, but 
+without any warranty; without even the implied warranty of 
+merchantibility or fitness for a particular purpose.</p>
+<p>
+</p>
+<hr />
+<h1><a name="autor">AUTOR</a></h1>
+<p>Harald Albers, <a href="mailto:albers@cpan.org">albers@cpan.org</a></p>
+<p>See the <em class="file">Changes</em> file for the change history.</p>
+
+</body>
+
+</html>

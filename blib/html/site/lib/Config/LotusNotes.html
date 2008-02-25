@@ -1,0 +1,320 @@
+<?xml version="1.0" ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<!-- saved from url=(0017)http://localhost/ -->
+<script language="JavaScript" src="../../../displayToc.js"></script>
+<script language="JavaScript" src="../../../tocParas.js"></script>
+<script language="JavaScript" src="../../../tocTab.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../scineplex.css">
+<title>Config::LotusNotes - Access Lotus Notes/Domino configuration</title>
+<link rel="stylesheet" href="../../../Active.css" type="text/css" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<script>writelinks('__top__',3);</script>
+<h1><a>Config::LotusNotes - Access Lotus Notes/Domino configuration</a></h1>
+<p><a name="__index__"></a></p>
+
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#version">VERSION</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<ul>
+
+		<li><a href="#the_lotus_notes_environment">The Lotus Notes environment</a></li>
+	</ul>
+
+	<li><a href="#methods">METHODS</a></li>
+	<li><a href="#see_also">SEE ALSO</a></li>
+	<li><a href="#diagnostics">DIAGNOSTICS</a></li>
+	<li><a href="#dependencies">DEPENDENCIES</a></li>
+	<li><a href="#bugs_and_limitations">BUGS AND LIMITATIONS</a></li>
+	<ul>
+
+		<li><a href="#problems_locating_installations">Problems locating installations</a></li>
+		<li><a href="#malformed_notes_ini_files">Malformed notes.ini files</a></li>
+		<li><a href="#parameter_order_in_notes_ini">Parameter order in notes.ini</a></li>
+	</ul>
+
+	<li><a href="#examples">EXAMPLES</a></li>
+	<ul>
+
+		<li><a href="#code_example">code example</a></li>
+		<li><a href="#demo_scripts">demo scripts</a></li>
+	</ul>
+
+	<li><a href="#licence_and_copyright">LICENCE AND COPYRIGHT</a></li>
+	<li><a href="#autor">AUTOR</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>Config::LotusNotes - Access Lotus Notes/Domino configuration</p>
+<p>
+</p>
+<hr />
+<h1><a name="version">VERSION</a></h1>
+<p>This documentation refers to <code>Config::LotusNotes</code> 0.31, 
+released Feb 25, 2008.</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+  <span class="variable">$factory</span> <span class="operator">=</span> <span class="variable">Config::LotusNotes</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+</pre>
+<pre>
+  <span class="comment"># access default installation</span>
+  <span class="variable">$conf</span> <span class="operator">=</span> <span class="variable">$factory</span><span class="operator">-&gt;</span><span class="variable">default_configuration</span><span class="operator">();</span>
+  <span class="variable">$data</span> <span class="operator">=</span> <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">get_environment_value</span><span class="operator">(</span><span class="string">'Directory'</span><span class="operator">);</span>
+  <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">set_environment_value</span><span class="operator">(</span><span class="string">'$NotesEnvParameter'</span><span class="operator">,</span> <span class="string">'value'</span><span class="operator">);</span>
+</pre>
+<pre>
+  <span class="comment"># find all installations </span>
+  <span class="variable">@installs</span> <span class="operator">=</span> <span class="variable">$factory</span><span class="operator">-&gt;</span><span class="variable">get_all_configurations</span><span class="operator">();</span>
+</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p><code>Config::LotusNotes</code> gives you a view of your local Lotus Notes/Domino 
+installations from the filesystem's perspective.
+Its main purpose is to read and manipulate the main Notes configuration file, 
+<em class="file">notes.ini</em>.</p>
+<p>The module can handle multiple installations.</p>
+<p>You can use it to</p>
+<pre>
+ - enumerate local Notes/Domino installations
+ - gather basic information about your local Notes/Domino installations 
+ - exchange data with Lotus Notes via the environment functions.</pre>
+<p>A <code>Config::LotusNotes</code> object searches the Windows registry for Lotus Notes
+installations, which can then be accessed in their representations as 
+<a href="../../../site/lib/Config/LotusNotes/Configuration.html">Config::LotusNotes::Configuration</a> objects.</p>
+<p>
+</p>
+<h2><a name="the_lotus_notes_environment">The Lotus Notes environment</a></h2>
+<p>The Lotus Notes environment is often used to store local user preferences 
+and to share information between separate parts of an application.</p>
+<p>The Lotus Notes formula language has the <code>@Environment</code> and <code>@SetEnvironment</code>
+functions and the <code>ENVIRONMENT</code> keyword to access the program's environment.
+Lotus script uses the <code>GetEnvironmentValue</code>, <code>GetEnvironmentString</code>,
+<code>SetEnvironmentVar</code> and <code>Environ</code> functions for that purpose.
+The Lotus Notes environment is stored in the <em class="file">notes.ini</em> file, which is 
+instantly updated after each change to the environment. 
+This allows you to communicate data to external programs.</p>
+<p>Unfortunately, Lotus Notes does not recognize external changes to 
+<em class="file">notes.ini</em> while it is running. 
+If you need to push data to a running instance of Lotus Notes, you can use the 
+environment functions of the corresponding OLE object as shown in <a href="#see_also">SEE ALSO</a>.
+There might be problems with simultaneous programmatic and user access 
+to the same Lotus Notes session.</p>
+<p>
+</p>
+<hr />
+<h1><a name="methods">METHODS</a></h1>
+<dl>
+<dt><strong><a name="new" class="item"><code>new()</code>;</a></strong>
+
+<dd>
+<p>Constructor, returns a <code>Config::LotusNotes</code> object that can give you
+<a href="../../../site/lib/Config/LotusNotes/Configuration.html">Config::LotusNotes::Configuration</a> objects
+via its <a href="#default_configuration"><code>default_configuration()</code></a> and <a href="#all_configurations"><code>all_configurations()</code></a> methods.</p>
+</dd>
+</li>
+<dt><strong><a name="default_configuration" class="item"><code>default_configuration()</code>;</a></strong>
+
+<dd>
+<p>Returns a <a href="../../../site/lib/Config/LotusNotes/Configuration.html">Config::LotusNotes::Configuration</a> 
+object for the default Lotus Notes installation.
+The default installation is the one that is registered in the Windows registry 
+as the handler for the <code>Notes</code> class.</p>
+</dd>
+<dd>
+<p>If there is only one version of Lotus Notes installed on your machine, 
+this is what you want.</p>
+</dd>
+<dd>
+<p>This method will throw an 'No Lotus Notes/Domino installation found' exception 
+if it cannot find any Lotus Notes installation.</p>
+</dd>
+</li>
+<dt><strong><a name="all_configurations" class="item"><code>all_configurations()</code>;</a></strong>
+
+<dd>
+<p>This gives you an array containing one 
+<a href="../../../site/lib/Config/LotusNotes/Configuration.html">Config::LotusNotes::Configuration</a> object 
+for each Lotus Notes/Domino installation found on your machine.
+If no installation is found, an empty array is returned.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="see_also">SEE ALSO</a></h1>
+<p>An alternative way of accessing Lotus Notes/Domino is via its OLE and COM 
+scripting capabilities. Here is an OLE example:</p>
+<pre>
+  <span class="keyword">use</span> <span class="variable">Win32::OLE</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="comment"># print Lotus Notes version:</span>
+  <span class="variable">$Notes</span> <span class="operator">=</span> <span class="variable">Win32::OLE</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">(</span><span class="string">'Notes.NotesSession'</span><span class="operator">)</span>
+      <span class="keyword">or</span> <span class="keyword">die</span> <span class="string">"Cannot start Notes.NotesSession object.\n"</span><span class="operator">;</span>
+  <span class="operator">(</span><span class="variable">$Version</span><span class="operator">)</span> <span class="operator">=</span> <span class="operator">(</span><span class="variable">$Notes</span><span class="operator">-&gt;</span><span class="operator">{</span><span class="string">NotesVersion</span><span class="operator">}</span> <span class="operator">=~</span> <span class="regex">/\s*(.*\S)\s*$/</span><span class="operator">);</span> <span class="comment"># remove blanks</span>
+  <span class="keyword">printf</span> <span class="string">"Running Notes %s on %s.\n"</span><span class="operator">,</span> <span class="variable">$Version</span><span class="operator">,</span> <span class="variable">$Notes</span><span class="operator">-&gt;</span><span class="variable">Platform</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="comment"># write value to environment</span>
+  <span class="keyword">print</span> <span class="string">"Setting </span><span class="variable">$key</span><span class="string"> to </span><span class="variable">$value</span><span class="string">\n"</span><span class="operator">;</span>
+  <span class="variable">$session</span><span class="operator">-&gt;</span><span class="variable">SetEnvironmentVar</span><span class="operator">(</span><span class="string">'$NotesEnvParameter'</span><span class="operator">,</span> <span class="string">'test value'</span><span class="operator">);</span>
+</pre>
+<p>This will start an instance of Lotus Notes if none is already running.
+See the Lotus Notes designer documentation for more information.</p>
+<p>
+</p>
+<hr />
+<h1><a name="diagnostics">DIAGNOSTICS</a></h1>
+<p>Call the constructor method <a href="#new"><code>new()</code></a> with the option <code>debug =&gt; 1</code> to get 
+diagnostic information on the search progress.</p>
+<p>
+</p>
+<hr />
+<h1><a name="dependencies">DEPENDENCIES</a></h1>
+<p>This module only runs under Microsoft Windows (tested on Windows NT, 2000 
+and XP).
+It uses <a href="../../../lib/Win32/TieRegistry.html">Win32::TieRegistry</a> and 
+<a href="../../../site/lib/Config/IniHash.html">Config::IniHash</a> (which ist not a standard module). 
+The test require Test::More.
+Optional modules for the tests are Test::Pod and Test::Pod::Coverage.</p>
+<p>
+</p>
+<hr />
+<h1><a name="bugs_and_limitations">BUGS AND LIMITATIONS</a></h1>
+<p>Please report any bugs or feature requests through the web interface at 
+<a href="http://rt.cpan.org/Public/Bug/Report.html?Queue=Config-LotusNotes">http://rt.cpan.org/Public/Bug/Report.html?Queue=Config-LotusNotes</a></p>
+<p>
+</p>
+<h2><a name="problems_locating_installations">Problems locating installations</a></h2>
+<p>Lotus Notes/Domino stores information about the installed versions in 
+registry keys that are specific  to the main version number only, 
+e.g. 5.0, 6.0 and 7.0, with &quot;.0&quot; being fix.
+Each additional installation will overwrite the data of any previous 
+installation that has the same main version number.</p>
+<p>This module works around this problem by searching several additional places 
+in the registry for possible installation locations. 
+In complex installations this might not find all instances.</p>
+<p>Please bear in mind that such complex situations can only be created if you 
+cheat the Notes installer by renaming the paths of your existing installations 
+before each additional installation.
+The normal behaviour of the installer is to force you to update your previous 
+installation. 
+So in real life, there should be no problem with missed installations.</p>
+<p>
+</p>
+<h2><a name="malformed_notes_ini_files">Malformed notes.ini files</a></h2>
+<p>Under certains conditions a <em class="file">notes.ini</em> file may contain malformed lines,
+i.e. lines that do not match the pattern <code>parameter=value</code>.
+Such lines are ignored when reading values. 
+If you write back values to a corrupt <em class="file">notes.ini</em> file using the
+<a href="../../../site/lib/Config/LotusNotes/Configuration.html#set_environment_value">set_environment_value()</a> 
+function, the malformed lines are removed from <em class="file">notes.ini</em>.</p>
+<p>If a <em class="file">notes.ini</em> file cannot be parsed at all, a warning will be issued and the 
+corresponding installation will be skipped by <a href="#all_configurations"><code>all_configurations()</code></a>. 
+<a href="#default_configuration"><code>default_configuration()</code></a> will throw an &quot;Error parsing ...&quot; exception in that case.</p>
+<p>Malformed <em class="file">notes.ini</em> files can be produced by writing multiline values to the
+environment, e.g. with Notes formula code like this: 
+<code>@SetEnvironment(&quot;testvalue&quot;; &quot;A&quot;+@Char(10)+&quot;B&quot;)</code>, which produces two lines, 
+the second one just containing &quot;B&quot;.
+A successive read of testvalue will return just &quot;A&quot;.</p>
+<p>
+</p>
+<h2><a name="parameter_order_in_notes_ini">Parameter order in notes.ini</a></h2>
+<p>If you write to a <em class="file">notes.ini</em> file with the
+<a href="../../../site/lib/Config/LotusNotes/Configuration.html#set_environment_value">set_environment_value()</a> 
+function, the entries in that file will appear in random order.
+This should not pose any problems.</p>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>
+</p>
+<h2><a name="code_example">code example</a></h2>
+<pre>
+  <span class="keyword">use</span> <span class="variable">Config::LotusNotes</span><span class="operator">;</span>
+  <span class="variable">$factory</span> <span class="operator">=</span> <span class="variable">Config::LotusNotes</span><span class="operator">-&gt;</span><span class="variable">new</span><span class="operator">();</span>
+</pre>
+<pre>
+  <span class="comment"># get default LotusNotes installation</span>
+  <span class="variable">$conf</span> <span class="operator">=</span> <span class="variable">$factory</span><span class="operator">-&gt;</span><span class="variable">default_configuration</span><span class="operator">();</span>
+  <span class="keyword">print</span> <span class="string">'Lotus Notes '</span><span class="operator">,</span> <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">version</span><span class="operator">,</span> <span class="string">' installed in '</span><span class="operator">,</span> <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">notespath</span><span class="operator">,</span> <span class="string">"\n"</span><span class="operator">;</span>
+</pre>
+<pre>
+  <span class="comment"># retrieving and setting notes.ini values</span>
+  <span class="comment"># get name of the user's mail file.</span>
+  <span class="variable">$mail_file</span> <span class="operator">=</span> <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">get_environment_value</span><span class="operator">(</span><span class="string">'MailFile'</span><span class="operator">);</span>
+  <span class="comment"># store a value in notes.ini</span>
+  <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">set_environment_value</span><span class="operator">(</span><span class="string">'$NotesEnvParameter'</span><span class="operator">,</span> <span class="string">'test value'</span><span class="operator">);</span>
+</pre>
+<pre>
+  <span class="comment"># find all installations </span>
+  <span class="variable">@all_confs</span> <span class="operator">=</span> <span class="variable">$factory</span><span class="operator">-&gt;</span><span class="variable">all_configurations</span><span class="operator">();</span>
+</pre>
+<pre>
+  <span class="comment"># print a table with version, type and path of all installations.</span>
+  <span class="comment"># see demo\FindNotes.pl for an extended version.</span>
+  <span class="keyword">printf</span> <span class="string">"%-8s %-7s %s\n"</span><span class="operator">,</span> <span class="string">'version'</span><span class="operator">,</span> <span class="string">'type'</span><span class="operator">,</span> <span class="string">'path'</span><span class="operator">;</span>
+  <span class="keyword">foreach</span> <span class="keyword">my</span> <span class="variable">$conf</span> <span class="operator">(</span><span class="variable">@all_confs</span><span class="operator">)</span> <span class="operator">{</span>
+      <span class="keyword">printf</span> <span class="string">"%-8s %-7s %s\n"</span><span class="operator">,</span> 
+          <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">version</span><span class="operator">,</span> 
+          <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">is_server</span> <span class="operator">?</span> <span class="string">'server'</span> <span class="operator">:</span> <span class="string">'client'</span><span class="operator">,</span> 
+          <span class="variable">$conf</span><span class="operator">-&gt;</span><span class="variable">notespath</span><span class="operator">;</span>
+  <span class="operator">}</span>
+</pre>
+<pre>
+  <span class="comment"># filter the list: only servers</span>
+  <span class="variable">@servers</span> <span class="operator">=</span> <span class="keyword">grep</span> <span class="operator">{</span> <span class="variable">$_</span><span class="operator">-&gt;</span><span class="variable">is_server</span> <span class="operator">}</span> <span class="variable">@all_confs</span><span class="operator">;</span>
+</pre>
+<p>
+</p>
+<h2><a name="demo_scripts">demo scripts</a></h2>
+<p>This module also installs two simple demonstration scripts: 
+<em class="file">findnotes.pl</em> enumerates local Notes/Domino installations and
+<em class="file">editnotesini.pl</em> reads and changes notes.ini parameters.</p>
+<p>
+</p>
+<hr />
+<h1><a name="licence_and_copyright">LICENCE AND COPYRIGHT</a></h1>
+<p>Copyright (C) 2006 HS - Hamburger Software GmbH &amp; Co. KG.
+All rights reserved.</p>
+<p>This module is free software; you can redistribute it and/or modify it 
+under the same terms as Perl itself.</p>
+<p>This library is distributed in the hope that it will be useful, but 
+without any warranty; without even the implied warranty of 
+merchantibility or fitness for a particular purpose.</p>
+<p>
+</p>
+<hr />
+<h1><a name="autor">AUTOR</a></h1>
+<p>Harald Albers, <a href="mailto:albers@cpan.org">albers@cpan.org</a></p>
+<p>See the <em class="file">Changes</em> file for the change history.</p>
+
+</body>
+
+</html>

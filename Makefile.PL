@@ -13,5 +13,6 @@ WriteMakefile(
     PREREQ_PM     => {
         Win32::TieRegistry => 0,
         Config::IniHash    => 0,
+        File::HomeDir      => 0,
     },
 );
