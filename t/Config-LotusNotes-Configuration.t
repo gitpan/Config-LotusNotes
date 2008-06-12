@@ -2,12 +2,12 @@ use strict;
 use warnings;
 use Test::More;
 
-my $VERSION = '0.31';
+my $VERSION = '0.32';
 my $test_data = 'data';  # directory with test files mocking a Notes install
 
 # expected number of tests
 BEGIN {
-    plan tests => 21;
+    plan tests => 22;
     #plan 'no_plan';
 }
 
@@ -25,7 +25,7 @@ is($Config::LotusNotes::Configuration::VERSION, $VERSION, "version = $VERSION");
 can_ok('Config::LotusNotes::Configuration', qw(
     new 
     notesini  notespath  datapath 
-    version   is_client  is_server
+    version   is_client  is_server install_scope
     get_environment_value set_environment_value
 ));
 
@@ -52,6 +52,7 @@ is($config->notesini,  "data\\notes.ini", 'notesini attribute' );
 is($config->version,  '5.0.10',           'version attribute'  );
 is($config->is_client, 1,                 'is_client attribute');
 is($config->is_server, '',                'is_server attribute');
+is($config->install_scope, 'just for me', 'install_scope'      );
 
 # reading, writing and deleting environment values
 is($config->get_environment_value('KitType'             ), 1,      'read existing key');

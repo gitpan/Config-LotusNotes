@@ -5,7 +5,7 @@ use Carp;
 use Win32::TieRegistry Delimiter => '/';
 use Config::LotusNotes::Configuration;
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 
 # constructor ----------------------------------------------------------------
 
@@ -207,8 +207,8 @@ Config::LotusNotes - Access Lotus Notes/Domino configuration
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes> 0.31, 
-released Feb 25, 2008.
+This documentation refers to C<Config::LotusNotes> 0.32, 
+released Jun 12, 2008.
 
 =head1 SYNOPSIS
 
@@ -226,7 +226,7 @@ released Feb 25, 2008.
 
 C<Config::LotusNotes> gives you a view of your local Lotus Notes/Domino 
 installations from the filesystem's perspective.
-Its main purpose is to read and manipulate the main Notes configuration file, 
+Its main purpose is to read and manipulate the Notes configuration file, 
 F<notes.ini>. 
 
 The module can handle multiple installations.
@@ -322,8 +322,9 @@ diagnostic information on the search progress.
 
 This module only runs under Microsoft Windows (tested on Windows NT, 2000 
 and XP).
-It uses L<Win32::TieRegistry|Win32::TieRegistry> and 
-L<Config::IniHash|Config::IniHash> (which ist not a standard module). 
+It uses L<Win32::TieRegistry|Win32::TieRegistry>,  
+L<Config::IniHash|Config::IniHash> and L<File::HomeDir|File::HomeDir>
+(the latter two not being standard modules).
 The test require Test::More.
 Optional modules for the tests are Test::Pod and Test::Pod::Coverage.
 
@@ -355,6 +356,7 @@ So in real life, there should be no problem with missed installations.
 
 Under certains conditions a F<notes.ini> file may contain malformed lines,
 i.e. lines that do not match the pattern C<parameter=value>.
+
 Such lines are ignored when reading values. 
 If you write back values to a corrupt F<notes.ini> file using the
 L<set_environment_value()|Config::LotusNotes::Configuration/set_environment_value> 
@@ -364,11 +366,17 @@ If a F<notes.ini> file cannot be parsed at all, a warning will be issued and the
 corresponding installation will be skipped by all_configurations()Z<>. 
 default_configuration() will throw an "Error parsing ..." exception in that case.
 
-Malformed F<notes.ini> files can be produced by writing multiline values to the
+Malformed F<notes.ini> files can be reproduced by writing multiline values to the
 environment, e.g. with Notes formula code like this: 
 C<@SetEnvironment("testvalue"; "A"+@Char(10)+"B")>, which produces two lines, 
 the second one just containing "B".
 A successive read of testvalue will return just "A".
+
+In my environment lines like
+
+ 3.2008 09:32:30
+
+are quite common and seem to originate from the Smart Upgrade process.
 
 =head2 Parameter order in notes.ini
 
@@ -413,7 +421,7 @@ This should not pose any problems.
 =head2 demo scripts
 
 This module also installs two simple demonstration scripts: 
-F<findnotes.pl> enumerates local Notes/Domino installations and
+F<FindNotes.pl> enumerates local Notes/Domino installations and
 F<editnotesini.pl> reads and changes notes.ini parameters.
 
 =head1 LICENCE AND COPYRIGHT

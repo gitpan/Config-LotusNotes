@@ -5,13 +5,14 @@ use Carp;
 use Config::IniHash;
 use File::HomeDir;
 
-our $VERSION = '0.31';
+our $VERSION = '0.32';
 
 
 # constructor ----------------------------------------------------------------
 
 sub new {
     my ($classname, %options) = @_;
+    my $scope = 'just for me';
     my $path = $options{path} or die 'no Notes install path specified';
     $path =~ s/\\$//;
 
@@ -23,6 +24,7 @@ sub new {
     if (! -f $notesini) {
         $notesini = File::HomeDir->my_data . '\Lotus\Notes\Data\notes.ini';
         croak "No notes.ini found in $path and current user's profile"  unless -f $notesini;
+        $scope = 'all users';
     }
 
     # Create and store object for easy access to inifile values.
@@ -33,6 +35,7 @@ sub new {
         notespath => $path,
         notesini  => $notesini,
         inihash   => $inihash,
+        scope     => $scope,
     }, $classname;
     return $self;
 }
@@ -40,12 +43,14 @@ sub new {
 
 # public accessors -----------------------------------------------------------
 
-sub notesini  { return shift->{notesini }}
-sub notespath { return shift->{notespath}}
-sub datapath  { return shift->get_environment_value('Directory')}
+sub notesini  { return shift->{notesini } }
+sub notespath { return shift->{notespath} }
+sub datapath  { return shift->get_environment_value('Directory') }
 
 sub is_server { return shift->get_environment_value('KitType') == 2 }
 sub is_client { return shift->get_environment_value('KitType') == 1 }
+
+sub install_scope { return shift->{scope} }
 
 sub version {
     my ($self) = @_;
@@ -96,8 +101,8 @@ Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configurat
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes::Configuration> 0.31, 
-released Feb 25, 2008.
+This documentation refers to C<Config::LotusNotes::Configuration> 0.32, 
+released Jun 12, 2008.
 
 =head1 SYNOPSIS
 
@@ -158,6 +163,10 @@ Returns true if the configuration belongs to a client (workstation) installation
 =item is_server();
 
 Returns true if the configuration belongs to a server installation.
+
+=item install_scope();
+
+Returns "just for me" or "all users" depending on the chosen setup type.
 
 =back
 
