@@ -5,7 +5,7 @@ use Carp;
 use Config::IniHash;
 use File::HomeDir;
 
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 
 
 # constructor ----------------------------------------------------------------
@@ -101,8 +101,8 @@ Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configurat
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes::Configuration> 0.32, 
-released Jun 12, 2008.
+This documentation refers to C<Config::LotusNotes::Configuration> 0.33, 
+released Feb 7, 2011.
 
 =head1 SYNOPSIS
 

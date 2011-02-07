@@ -8,14 +8,14 @@ use lib "../lib";
 use Config::LotusNotes;
 
 my %options;
-$options{debug} = 1 if $ARGV[0]||'' eq '-d';
+$options{debug} = 1  if ($ARGV[0] || '') eq '-d';
 
 my $conf = Config::LotusNotes->new(%options);
 my @all_confs = $conf->all_configurations();
 my $default   = eval { $conf->default_configuration() };
 
-print "Lotus Notes installs on node ", Win32::NodeName(), ":\n";
-print "-" x (length(Win32::NodeName())+30), "\n";
+print "Lotus Notes installations on node ", Win32::NodeName(), ":\n";
+print "-" x (length(Win32::NodeName())+35), "\n";
 
 if (@all_confs) {
     printf "%-8s %-7s %s\n", 'version', 'type', 'path';

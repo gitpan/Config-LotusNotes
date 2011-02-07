@@ -5,7 +5,7 @@ use Carp;
 use Win32::TieRegistry Delimiter => '/';
 use Config::LotusNotes::Configuration;
 
-our $VERSION = '0.32';
+our $VERSION = '0.33';
 
 # constructor ----------------------------------------------------------------
 
@@ -93,9 +93,8 @@ sub _get_notes_handler {
     # one install is registered for the Notes class.
     print STDERR "--  Searching Notes class handler\n"  if $self->{debug};
     if (my $path = $Registry->{"Classes/Notes/Shell/Open/Command//"}) {
-        $path =~ s/"//g;
-        $path =~ s/^(\S+).*/$1/;
-        $path =~ s/[^\\]+$//;
+        $path =~ s/^"([^"]+)".*/$1/;  # first quoted element
+        $path =~ s/[^\\]+$//;  # shrink to path
         print STDERR "--   Found $path\n"  if $self->{debug};
         return _normalize_path($path);
     }
@@ -207,8 +206,8 @@ Config::LotusNotes - Access Lotus Notes/Domino configuration
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes> 0.32, 
-released Jun 12, 2008.
+This documentation refers to C<Config::LotusNotes> 0.33, 
+released Feb 7, 2011.
 
 =head1 SYNOPSIS
 
@@ -320,9 +319,9 @@ diagnostic information on the search progress.
 
 =head1 DEPENDENCIES
 
-This module only runs under Microsoft Windows (tested on Windows NT, 2000 
-and XP).
-It uses L<Win32::TieRegistry|Win32::TieRegistry>,  
+This module only works with Microsoft Windows.
+It has been tested on Windows NT, 2000, XP and 7 (64-bit).
+It uses L<Win32::TieRegistry|Win32::TieRegistry>,
 L<Config::IniHash|Config::IniHash> and L<File::HomeDir|File::HomeDir>
 (the latter two not being standard modules).
 The test require Test::More.

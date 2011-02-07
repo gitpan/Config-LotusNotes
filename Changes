@@ -1,6 +1,10 @@
 Changelog for Config::LotusNotes
 --------------------------------
 
+0.33 (02/07/2011)
+   - fixed problem locating installations in paths that contain spaces
+   - fixed option parsing problem in sample script
+
 0.32 (06/12/2008)
    - new property "install_scope" for install variants "all users" and "just for me"
    - minor documentation updates 
