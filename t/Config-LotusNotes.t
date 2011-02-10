@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::More;
 
-my $VERSION = '0.33';
+my $VERSION = '0.34';
 my $test_data = 'data';  # directory with test files mocking a Notes install
 
 # expected number of tests

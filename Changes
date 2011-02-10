@@ -1,9 +1,13 @@
 Changelog for Config::LotusNotes
 --------------------------------
 
+0.34 (02/10/2011)
+   - improved detection on 64-bit systems
+
 0.33 (02/07/2011)
    - fixed problem locating installations in paths that contain spaces
    - fixed option parsing problem in sample script
+   - updated ppm package to support 64-bit systems
 
 0.32 (06/12/2008)
    - new property "install_scope" for install variants "all users" and "just for me"
@@ -29,7 +33,7 @@ Changelog for Config::LotusNotes
      datapath() attribute.
    - Config::LotusNotes no longer dies when no COM server entries are 
      found in the registry.
-   - Added mock notes install files to test directory so that the modules 
+   - Added mock notes binaries to test directory so that the modules 
      can be tested if no Notes is installed.
    - Added tests for POD coverage
 

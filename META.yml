@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Config-LotusNotes
-version:            0.33
+version:            0.34
 abstract:           Access Lotus Notes/Domino configuration
 author:
     - Harald Albers <albers@cpan.org>

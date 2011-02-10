@@ -5,7 +5,7 @@ use Carp;
 use Config::IniHash;
 use File::HomeDir;
 
-our $VERSION = '0.33';
+our $VERSION = '0.34';
 
 
 # constructor ----------------------------------------------------------------
@@ -29,7 +29,7 @@ sub new {
 
     # Create and store object for easy access to inifile values.
     # Config::IniHash lets us treat the inifile as an ordinary hash.
-    my $inihash = ReadINI($notesini, (case => 'sensitive')) 
+    my $inihash = ReadINI($notesini, (case => 'sensitive'))
         or croak "Error parsing $notesini";
     my $self = bless {
         notespath => $path,
@@ -75,20 +75,20 @@ sub version {
 # public methods -------------------------------------------------------------
 
 sub get_environment_value {
-	my ($self, $key) = @_;
-	return $self->{inihash}->{Notes}->{$key};
+    my ($self, $key) = @_;
+    return $self->{inihash}->{Notes}->{$key};
 }
 
 
 sub set_environment_value {
-	my ($self, $key, $value) = @_;
-	if (defined $value) {
+    my ($self, $key, $value) = @_;
+    if (defined $value) {
         $self->{inihash}->{Notes}->{$key} = $value;
-	}
-	else {
+    }
+    else {
         delete $self->{inihash}->{Notes}->{$key};
-	}
-	return WriteINI($self->{notesini}, $self->{inihash});
+    }
+    return WriteINI($self->{notesini}, $self->{inihash});
 }
 
 
@@ -101,8 +101,8 @@ Config::LotusNotes::Configuration - Represents one Lotus Notes/Domino configurat
 
 =head1 VERSION
 
-This documentation refers to C<Config::LotusNotes::Configuration> 0.33, 
-released Feb 7, 2011.
+This documentation refers to C<Config::LotusNotes::Configuration> 0.34,
+released Feb 10, 2011.
 
 =head1 SYNOPSIS
 
@@ -124,15 +124,15 @@ released Feb 7, 2011.
 A C<Config::LotusNotes::Configuration> object represents the configuration
 of a local Lotus Notes/Domino installation from the view of the file system.
 It lets you read and modify the Lotus Notes configuration file, F<notes.ini>,
-where Notes stores its environment. 
-See L<Config::LotusNotes/"The Lotus Notes environment"> 
-for more information on exchanging data with Lotus Notes via the Notes environment. 
+where Notes stores its environment.
+See L<Config::LotusNotes/"The Lotus Notes environment">
+for more information on exchanging data with Lotus Notes via the Notes environment.
 
-C<Config::LotusNotes::Configuration> objects also give you access to some 
+C<Config::LotusNotes::Configuration> objects also give you access to some
 basic information like install paths and the Notes version number.
 
-To create these objects, use the 
-L<default_configuration()|Config::LotusNotes/item_default_configuration> and 
+To create these objects, use the
+L<default_configuration()|Config::LotusNotes/item_default_configuration> and
 L<all_configurations()|Config::LotusNotes/item_default_configuration>
 methods of L<Config::LotusNotes|Config::LotusNotes>.
 
@@ -176,12 +176,12 @@ Returns "just for me" or "all users" depending on the chosen setup type.
 
 =item new(path => $path);
 
-Constructor, returns a C<Config::LotusNotes::Configuration> object 
-representing the installation at the specified path. 
+Constructor, returns a C<Config::LotusNotes::Configuration> object
+representing the installation at the specified path.
 
-The recommended way to create C<Config::LotusNotes::Configuration> 
+The recommended way to create C<Config::LotusNotes::Configuration>
 objects is to use the
-L<default_configuration()|Config::LotusNotes/item_default_configuration> and 
+L<default_configuration()|Config::LotusNotes/item_default_configuration> and
 L<all_configurations()|Config::LotusNotes/item_default_configuration>
 methods of L<Config::LotusNotes|Config::LotusNotes>.
 
@@ -190,7 +190,7 @@ methods of L<Config::LotusNotes|Config::LotusNotes>.
 Gets the value of the parameter named C<$item_name> from F<notes.ini>.
 If there is no such parameter, C<undef> is returned.
 
-In order to access values that were written by Lotus Notes via the environment 
+In order to access values that were written by Lotus Notes via the environment
 functions, prefix the parameter name with "$".
 
 =item set_environment_value($item_name, $value);
@@ -199,10 +199,10 @@ Writes a parameter/value pair to F<notes.ini>.
 If the entry exists, it will be updated with the new value.
 If the value is C<undef>, the whole entry is removed.
 
-If you want the parameter to be accessible to Lotus Notes via the environment 
+If you want the parameter to be accessible to Lotus Notes via the environment
 functions, prefix its name with "$".
 
-If you write to a F<notes.ini> file with this function, its entries will 
+If you write to a F<notes.ini> file with this function, its entries will
 be saved in random order.
 
 =back
@@ -220,11 +220,11 @@ See L<Config::LotusNotes/EXAMPLES>.
 Copyright (C) 2006 HS - Hamburger Software GmbH & Co. KG.
 All rights reserved.
 
-This module is free software; you can redistribute it and/or modify it 
+This module is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
-This library is distributed in the hope that it will be useful, but 
-without any warranty; without even the implied warranty of 
+This library is distributed in the hope that it will be useful, but
+without any warranty; without even the implied warranty of
 merchantibility or fitness for a particular purpose.
 
 =head1 AUTOR
