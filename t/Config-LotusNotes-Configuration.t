@@ -1,3 +1,7 @@
+BEGIN {
+    print "1..0 # Skip win32 required\n" and exit unless $^O =~ /win32|cygwin/i;
+}
+
 use strict;
 use warnings;
 use Test::More;

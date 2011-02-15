@@ -1,5 +1,9 @@
-# As we do not know how many installs the current machine really has,
+# As we do not know how many installations the current machine really has,
 # we only do some very basic tests.
+
+BEGIN {
+    print "1..0 # Skip win32 required\n" and exit unless $^O =~ /win32|cygwin/i;
+}
 
 use strict;
 use warnings;
